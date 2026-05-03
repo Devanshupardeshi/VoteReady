@@ -38,7 +38,7 @@ const corsOptions = {
   origin: process.env.NODE_ENV === 'development' ? ['http://localhost:5173', 'http://127.0.0.1:5173'] : false
 };
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -56,7 +56,6 @@ const genAI = new GoogleGenerativeAI(process.env.VITE_GEMINI_API_KEY || '');
 // Gemini Proxy
 app.post('/api/gemini', async (req, res) => {
   try {
-    dotenv.config();
     const { modelName, requestBody } = req.body;
     
     // Prevent path traversal and parameter injection
@@ -115,7 +114,6 @@ app.get('/api/gemini-models', async (req, res) => {
 // YouTube Proxy
 app.get('/api/youtube', async (req, res) => {
   try {
-    dotenv.config();
     const { query, channelId, order } = req.query;
     if (!process.env.VITE_YOUTUBE_API_KEY) {
       return res.status(500).json({ error: 'YouTube API key is not configured.' });
@@ -149,7 +147,6 @@ app.get('/api/youtube', async (req, res) => {
 // Translate Proxy
 app.post('/api/translate', async (req, res) => {
   try {
-    dotenv.config();
     const { q, target } = req.body;
     if (!process.env.VITE_GOOGLE_TRANSLATE_API_KEY) {
       return res.status(500).json({ error: 'Translate API key is not configured.' });
@@ -182,10 +179,22 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
+// Global Error Handler
+app.use((err, req, res, next) => {
+  // Ignore logging for 404 file not found errors from sendFile
+  if (err.status !== 404 && process.env.NODE_ENV !== 'test') {
+    /* v8 ignore next 2 */
+    console.error('Unhandled API Error:', err.stack);
+  }
+  res.status(err.status || 500).json({ error: err.message || 'An unexpected error occurred on the server.' });
+});
+
+/* v8 ignore next 5 */
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
 }
+
 
 export { app };

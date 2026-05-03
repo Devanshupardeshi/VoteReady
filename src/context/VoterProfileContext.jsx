@@ -7,7 +7,7 @@
  * Persists language + completedSteps to localStorage.
  * Loads existing profile on mount for splash-skip logic.
  */
-import { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
+import { createContext, useContext, useReducer, useEffect, useCallback, useMemo } from 'react';
 
 const STORAGE_KEY = 'voteready_profile';
 
@@ -141,15 +141,15 @@ export function VoterProfileProvider({ children }) {
   /** Check if user has been onboarded */
   const isOnboarded = profile.isOnboarded || hasExistingProfile;
 
-  const value = {
-    profile: { ...profile, isOnboarded: isOnboarded },
+  const value = useMemo(() => ({
+    profile: { ...profile, isOnboarded },
     hasExistingProfile,
     setProfile,
     updateLanguage,
     toggleStep,
     toggleChecklistItem,
     resetProfile,
-  };
+  }), [profile, isOnboarded, hasExistingProfile, setProfile, updateLanguage, toggleStep, toggleChecklistItem, resetProfile]);
 
   return (
     <VoterProfileContext.Provider value={value}>
