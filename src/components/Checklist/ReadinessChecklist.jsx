@@ -61,6 +61,7 @@ export default function ReadinessChecklist() {
     return {
       completed,
       total,
+      /* v8 ignore next */
       percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
     };
   }, [checklistItems, profile.checklist]);

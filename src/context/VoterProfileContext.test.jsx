@@ -56,6 +56,7 @@ const TestComponent = () => {
       <span data-testid="voterType">{profile.voterType}</span>
       <span data-testid="language">{profile.language}</span>
       <span data-testid="onboarded">{profile.isOnboarded ? 'yes' : 'no'}</span>
+      <span data-testid="checklist">{JSON.stringify(profile.checklist)}</span>
       <button onClick={() => setProfile({ voterType: 'first_time', state: 'MH', primaryConcern: 'register' })}>SetProfile</button>
       <button onClick={() => updateLanguage('Hindi')}>UpdateLang</button>
       <button onClick={() => toggleStep(1)}>ToggleStep</button>
@@ -106,6 +107,22 @@ describe('VoterProfileProvider and useVoterProfile', () => {
     fireEvent.click(screen.getByText('Reset'));
     expect(screen.getByTestId('voterType').textContent).toBe('');
     expect(localStorage.getItem('voteready_profile')).toBeNull();
+  });
+
+  it('toggles checklist items via toggleChecklistItem', () => {
+    render(
+      <VoterProfileProvider>
+        <TestComponent />
+      </VoterProfileProvider>
+    );
+
+    // Toggle on
+    fireEvent.click(screen.getByText('ToggleChecklist'));
+    expect(JSON.parse(screen.getByTestId('checklist').textContent)).toContain('ft_1');
+
+    // Toggle off
+    fireEvent.click(screen.getByText('ToggleChecklist'));
+    expect(JSON.parse(screen.getByTestId('checklist').textContent)).not.toContain('ft_1');
   });
 
   it('loads profile from localStorage on mount', () => {

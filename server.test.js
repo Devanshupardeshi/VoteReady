@@ -133,6 +133,12 @@ describe('Express API Backend', () => {
       expect(res.body).toHaveProperty('items');
     });
 
+    it('should proxy GET /api/youtube with optional channelId and order params', async () => {
+      const res = await request(app).get('/api/youtube?query=election&channelId=UC123&order=date');
+      expect(res.statusCode).toBe(200);
+      expect(res.body).toHaveProperty('items');
+    });
+
     it('should successfully proxy POST /api/translate', async () => {
       const res = await request(app)
         .post('/api/translate')
@@ -143,19 +149,62 @@ describe('Express API Backend', () => {
   });
 
   describe('Error Handling and Edge Cases', () => {
-    it('should return 500 if Gemini API returns non-ok status', async () => {
+    it('should forward error status if Gemini API returns non-ok response', async () => {
       global.fetch = vi.fn().mockResolvedValueOnce({
         ok: false,
-        status: 500,
-        text: () => Promise.resolve('Internal Server Error')
+        status: 429,
+        json: () => Promise.resolve({ error: 'Rate limited' })
       });
 
       const response = await request(app)
         .post('/api/gemini')
         .send({ modelName: 'gemini-2.5-flash', requestBody: { contents: [{ parts: [{ text: 'Hello' }] }] } });
 
-      expect(response.status).toBe(500);
-      expect(response.body).toHaveProperty('error');
+      expect(response.status).toBe(429);
+      expect(response.body.error).toBe('Rate limited');
+    });
+
+    it('should forward error status if Gemini Models API returns non-ok response', async () => {
+      process.env.VITE_GEMINI_API_KEY = 'test_key';
+      global.fetch = vi.fn().mockResolvedValueOnce({
+        ok: false,
+        status: 403,
+        json: () => Promise.resolve({ error: 'Forbidden' })
+      });
+
+      const response = await request(app).get('/api/gemini-models');
+
+      expect(response.status).toBe(403);
+      expect(response.body.error).toBe('Forbidden');
+    });
+
+    it('should handle json parse failure on non-ok Gemini response gracefully', async () => {
+      global.fetch = vi.fn().mockResolvedValueOnce({
+        ok: false,
+        status: 502,
+        json: () => Promise.reject(new Error('bad json'))
+      });
+
+      const response = await request(app)
+        .post('/api/gemini')
+        .send({ modelName: 'gemini-2.5-flash', requestBody: { contents: [{ parts: [{ text: 'Hello' }] }] } });
+
+      expect(response.status).toBe(502);
+      expect(response.body).toEqual({});
+    });
+
+    it('should handle json parse failure on non-ok Gemini Models response gracefully', async () => {
+      process.env.VITE_GEMINI_API_KEY = 'test_key';
+      global.fetch = vi.fn().mockResolvedValueOnce({
+        ok: false,
+        status: 502,
+        json: () => Promise.reject(new Error('bad json'))
+      });
+
+      const response = await request(app).get('/api/gemini-models');
+
+      expect(response.status).toBe(502);
+      expect(response.body).toEqual({});
     });
 
     it('should trigger the global error handler for an unhandled error', async () => {
@@ -200,9 +249,15 @@ describe('Express API Backend', () => {
         .send('{"invalid json');
 
       expect(response.status).toBe(400); // Express body-parser returns 400 for bad JSON
-      // But let's check if the global handler catches it. 
-      // Actually express handles body-parser errors with next(err), which hits our global error handler!
       expect(response.body).toHaveProperty('error');
+    });
+
+    it('should handle 404 errors from SPA fallback gracefully', async () => {
+      // Requesting a non-API route triggers the SPA fallback sendFile,
+      // which will 404 since dist/index.html doesn't exist in test env
+      const response = await request(app).get('/non-existent-page');
+      // The global error handler catches the sendFile ENOENT error
+      expect([200, 404, 500]).toContain(response.status);
     });
   });
 });

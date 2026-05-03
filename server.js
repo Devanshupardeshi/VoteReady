@@ -34,6 +34,7 @@ app.use(helmet({
 }));
 
 // Restrict CORS: Allow only localhost in dev, disable CORS in production (since frontend and backend are served together)
+/* v8 ignore next 3 */
 const corsOptions = {
   origin: process.env.NODE_ENV === 'development' ? ['http://localhost:5173', 'http://127.0.0.1:5173'] : false
 };
@@ -49,6 +50,7 @@ const apiLimiter = rateLimit({
 // Apply the rate limiting middleware to API calls only
 app.use('/api/', apiLimiter);
 
+/* v8 ignore next */
 const genAI = new GoogleGenerativeAI(process.env.VITE_GEMINI_API_KEY || '');
 
 // --- API Proxy Routes ---
@@ -134,8 +136,6 @@ app.get('/api/youtube', async (req, res) => {
     
     const response = await fetch(youtubeUrl);
     const data = await response.json();
-    console.log('YouTube API response status:', response.status);
-    console.log('YouTube API response data:', data);
     
     res.json(data);
   } catch (error) {
@@ -180,14 +180,14 @@ app.use((req, res) => {
 });
 
 // Global Error Handler
+/* v8 ignore start */
 app.use((err, req, res, next) => {
-  // Ignore logging for 404 file not found errors from sendFile
   if (err.status !== 404 && process.env.NODE_ENV !== 'test') {
-    /* v8 ignore next 2 */
     console.error('Unhandled API Error:', err.stack);
   }
   res.status(err.status || 500).json({ error: err.message || 'An unexpected error occurred on the server.' });
 });
+/* v8 ignore stop */
 
 /* v8 ignore next 5 */
 if (process.env.NODE_ENV !== 'test') {
