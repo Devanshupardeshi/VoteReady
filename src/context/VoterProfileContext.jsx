@@ -12,7 +12,7 @@ import { createContext, useContext, useReducer, useEffect, useCallback } from 'r
 const STORAGE_KEY = 'voteready_profile';
 
 /** Default VoterProfile shape */
-const defaultProfile = {
+export const defaultProfile = {
   voterType: '',          // 'first_time' | 'returning' | 'nri' | 'student'
   state: '',              // one of 28 states + 8 UTs
   constituency: '',
@@ -48,7 +48,7 @@ function saveProfile(profile) {
 }
 
 /** Action types */
-const Actions = {
+export const Actions = {
   SET_PROFILE: 'SET_PROFILE',
   UPDATE_LANGUAGE: 'UPDATE_LANGUAGE',
   TOGGLE_STEP: 'TOGGLE_STEP',
@@ -57,7 +57,7 @@ const Actions = {
 };
 
 /** Reducer */
-function profileReducer(state, action) {
+export function profileReducer(state, action) {
   switch (action.type) {
     case Actions.SET_PROFILE:
       return { ...defaultProfile, ...action.payload };
