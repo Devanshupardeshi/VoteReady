@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.git/
+.DS_Store
+google-cloud-sdk/
+gcloud.zip
+.agent/
+VoteReady_PRD.pdf
+PRD_text.txt

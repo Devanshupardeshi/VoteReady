@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build
+dist/
+build/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cache
+.eslintcache
+
+# Extracted PRD text
+PRD_text.txt
+
+# Google Cloud SDK (local install — not part of project)
+google-cloud-sdk/
+gcloud.zip
+
+# Agent config
+.agent/
+
+# PDF docs
+VoteReady_PRD.pdf

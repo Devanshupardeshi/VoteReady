@@ -1,0 +1,164 @@
+/* ═══════════════════════════════════════════════
+   AppHeader — CSS Module
+   ═══════════════════════════════════════════════ */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-light);
+  padding: var(--space-3) var(--space-6);
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+/* ─── Logo ─── */
+.logoGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.logoSvg {
+  flex-shrink: 0;
+}
+
+.logoName {
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: -0.3px;
+}
+
+/* ─── Controls ─── */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* ─── Language selector ─── */
+.langWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.langIcon {
+  position: absolute;
+  left: 10px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.langSelect {
+  appearance: none;
+  padding: var(--space-2) var(--space-8) var(--space-2) 32px;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%2364748B' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 6l3.5 4 3.5-4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+.langSelect:hover {
+  border-color: var(--border-medium);
+}
+
+.langSelect:focus-visible {
+  border-color: var(--cta);
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+
+/* ─── Profile badge ─── */
+.profileBadge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+  background: var(--light-blue);
+  border: 1px solid rgba(26, 86, 168, 0.15);
+}
+
+.profileAvatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.profileType {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.profileState {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ─── Reset button ─── */
+.resetBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.resetBtn:hover {
+  background: var(--gray);
+  color: var(--text-primary);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+  .header {
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .profileInfo {
+    display: none;
+  }
+
+  .profileBadge {
+    padding: var(--space-1);
+  }
+}
