@@ -221,7 +221,7 @@ promptwars/
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/Devanshupardeshi/promptwars.git
+git clone https://github.com/Devanshupardeshi/VoteReady.git
 cd promptwars
 npm install
 ```
