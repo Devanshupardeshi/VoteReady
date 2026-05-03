@@ -28,7 +28,7 @@
 
 ## 🚀 Live Deployment
 
-> **🔗 [https://voteready-358464469744.us-central1.run.app](https://voteready-358464469744.us-central1.run.app)**
+> **🔗 [https://voteready-temp-358464469744.us-central1.run.app/](https://voteready-temp-358464469744.us-central1.run.app/)**
 >
 > Deployed on **Google Cloud Run** with auto-scaling, HTTPS, and global edge caching.
 
