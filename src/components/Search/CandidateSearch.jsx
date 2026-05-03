@@ -178,11 +178,8 @@ Return ONLY the raw JSON array, nothing else.`;
       {hasSearched && !loading && results.length > 0 && (
         <div className={styles.resultsGrid} role="list" aria-label="Candidate Cards">
           {results.map((result, idx) => (
-            <a
+            <article
               key={idx}
-              href={result.link}
-              target="_blank"
-              rel="noopener noreferrer"
               className={styles.candidateCard}
               role="listitem"
             >
@@ -205,9 +202,11 @@ Return ONLY the raw JSON array, nothing else.`;
               <p className={styles.candidateSnippet}>{result.snippet}</p>
               
               <div className={styles.cardFooter}>
-                <span className={styles.readMore}>View full profile →</span>
+                <a href={result.link} target="_blank" rel="noopener noreferrer" className={styles.readMore}>
+                  View full profile <span aria-hidden="true">→</span>
+                </a>
               </div>
-            </a>
+            </article>
           ))}
         </div>
       )}

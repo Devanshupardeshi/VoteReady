@@ -158,13 +158,14 @@ p {
 
 a {
   color: var(--cta);
-  text-decoration: none;
-  transition: color var(--transition-fast);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: all var(--transition-fast);
 }
 
 a:hover {
   color: var(--cta-hover);
-  text-decoration: underline;
+  text-decoration-color: transparent;
 }
 
 /* ─── Buttons ─── */
@@ -300,7 +301,7 @@ button {
 
 .badge-orange {
   background: #FFF7ED;
-  color: var(--orange);
+  color: #C2410C;
 }
 
 /* ─── Form controls ─── */

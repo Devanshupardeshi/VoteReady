@@ -126,8 +126,9 @@
 
 .profileState {
   font-size: 10px;
-  color: var(--text-muted);
+  color: var(--accent);
   font-weight: 500;
+  opacity: 0.85;
 }
 
 /* ─── Reset button ─── */

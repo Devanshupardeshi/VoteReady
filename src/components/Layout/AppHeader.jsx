@@ -38,7 +38,7 @@ export default function AppHeader({ onLanguageChange, onReset }) {
             <circle cx="32" cy="18" r="4" fill="var(--green)" />
             <path d="M28 14l4-4 4 4" stroke="var(--green)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span className={styles.logoName}>VoteReady</span>
+          <h1 className={styles.logoName}>VoteReady</h1>
         </div>
 
         {/* Right controls */}

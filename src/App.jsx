@@ -163,7 +163,7 @@ function AppContent() {
 
       {/* Main content */}
       <main className="app-main">
-        <div className="app-container">
+        <div className="app-container" id={`panel-${activeTab}`} role="tabpanel" aria-labelledby={`tab-${activeTab}`}>
           <Suspense fallback={<TabLoader />}>
             {activeTab === 'timeline' && (
               <ElectionTimeline
@@ -187,20 +187,23 @@ function AppContent() {
       </main>
 
       {/* Bottom tab bar */}
-      <nav className="tab-bar" role="tablist" aria-label="Main navigation">
-        {TABS.map((tab) => (
-          <button
-            key={tab.id}
-            className={`tab-btn ${activeTab === tab.id ? 'tab-active' : ''}`}
-            role="tab"
-            aria-selected={activeTab === tab.id}
-            aria-controls={`panel-${tab.id}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            <span className="tab-icon" aria-hidden="true">{tab.icon}</span>
-            <span className="tab-label">{tab.label}</span>
-          </button>
-        ))}
+      <nav aria-label="Main navigation">
+        <div className="tab-bar" role="tablist">
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              id={`tab-${tab.id}`}
+              className={`tab-btn ${activeTab === tab.id ? 'tab-active' : ''}`}
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              aria-controls={`panel-${tab.id}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              <span className="tab-icon" aria-hidden="true">{tab.icon}</span>
+              <span className="tab-label">{tab.label}</span>
+            </button>
+          ))}
+        </div>
       </nav>
 
       {/* Video modal */}

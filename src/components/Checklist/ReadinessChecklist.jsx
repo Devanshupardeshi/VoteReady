@@ -70,7 +70,7 @@ export default function ReadinessChecklist() {
   const getScoreColor = () => {
     if (score.percentage >= 80) return 'var(--green)';
     if (score.percentage >= 50) return 'var(--orange)';
-    return '#EF4444';
+    return '#dc2626';
   };
 
   const getScoreLabel = () => {

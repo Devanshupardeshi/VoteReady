@@ -176,6 +176,10 @@
   padding-top: var(--space-2);
 }
 
+.highlighted .subtitle {
+  color: var(--accent);
+}
+
 /* ─── Animation ─── */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-8px); }
